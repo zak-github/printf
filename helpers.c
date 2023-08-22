@@ -1,31 +1,53 @@
 #include "main.h"
 
 /**
- * get_specifier_handler - Function that gets the specifier handler
- * @spc: Specifier
+ * handle_number - Function that handel number.
+ * @number: Number
  *
- * Return: Int
+ * Return: VOID
  */
-int (*get_specifier_handler(char spc))(va_list args)
+void handle_number(int number)
 {
-	spc_t specifiers[] = {
-			{'c', handle_char},
-			{'s', handle_string},
-			{'%', handle_percent},
-			{'d', handle_d_i},
-			{'i', handle_d_i},
-			{'\0', NULL}
-	};
-	int i;
-
-	i = 0;
-
-	while (specifiers[i].spc != '\0')
+	if (number == -2147483648)
 	{
-		if (specifiers[i].spc == spc)
-			return (specifiers[i].spc_handler);
-		i++;
+		_putchar('-');
+		_putchar('2');
+		handle_number(147483648);
+		return;
+	} else if (number < 0)
+	{
+		_putchar('-');
+		number = -number;
 	}
+	if (number >= 10)
+	{
+		handle_number(number / 10);
+		handle_number(number % 10);
+	} else
+	{
+		_putchar(number + '0');
+	}
+}
 
-	return (NULL);
+/**
+ * number_len - Function to get length of number.
+ * @number: Number
+ *
+ * Return: Length of number
+ */
+int number_len(int number)
+{
+	int length = 0;
+
+	if (number == 0)
+		return (1);
+	if (number < 0)
+		length++;
+
+	while (number != 0)
+	{
+		number /= 10;
+		length++;
+	}
+	return (length);
 }
