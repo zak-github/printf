@@ -1,31 +1,43 @@
-#include "main.h"
+#ifndef MAIN
+#define MAIN
+
+#include <stdarg.h>
+#include <stddef.h>
+
+#define UNUSED(x) (void)(x)
 
 /**
- * get_specifier_handler - Function that gets the specifier handler
- * @spc: Specifier
+ * struct specifiers_struct - Specifiers structure
  *
- * Return: Int
+ * @spc: Specifier
+ * @spc_handler: The function to handel specifier
  */
-int (*get_specifier_handler(char spc))(va_list args)
+typedef struct specifiers_struct
 {
-	spc_t specifiers[] = {
-			{'c', handle_char},
-			{'s', handle_string},
-			{'%', handle_percent},
-			{'d', handle_d_i},
-			{'i', handle_d_i},
-			{'\0', NULL}
-	};
-	int i;
+	char spc;
 
-	i = 0;
+	int (*spc_handler)(va_list args);
 
-	while (specifiers[i].spc != '\0')
-	{
-		if (specifiers[i].spc == spc)
-			return (specifiers[i].spc_handler);
-		i++;
-	}
+} spc_t;
 
-	return (NULL);
-}
+int _putchar(char c);
+
+int _printf(const char *format, ...);
+
+int handle_char(va_list args);
+
+int handle_percent(va_list args);
+
+int handle_string(va_list args);
+
+int handle_d_i(va_list args);
+
+void handle_number(int number);
+
+int number_len(int number);
+
+int handle_unknown(char spc);
+
+int (*get_specifier_handler(char spc))(va_list args);
+
+#endif
